@@ -1,0 +1,308 @@
+
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Vérifier une attestation - diplome.gouv.fr</title>
+    <style>
+        :root {
+            --marianne-blue: #000091;
+            --emerald-bg: #89d4c1;
+            --light-grey: #f5f5f5;
+            --border-color: #ddd;
+            --button-blue: #91a2d5; 
+        }
+
+        body {
+            font-family: 'Open Sans', Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+            color: #333;
+            background-color: white;
+        }
+
+        /* --- Header --- */
+        .header-top {
+            padding: 20px 10%;
+            display: flex;
+            justify-content: space-between;
+            align-items: flex-end;
+        }
+
+        .logo-republique {
+            width: 120px;
+        }
+
+        .site-title {
+            color: #666;
+            font-size: 1.2rem;
+            font-weight: bold;
+            margin-top: 10px;
+        }
+
+        .nav-link {
+            font-size: 0.9rem;
+            text-decoration: none;
+            color: #333;
+            display: flex;
+            align-items: center;
+        }
+
+        /* --- Bannière Image & Titre --- */
+        .hero-image {
+            width: 100%;
+            height: 180px;
+            background: url('https://images.unsplash.com/photo-1517048676732-d65bc937f952?q=80&w=2070&auto=format&fit=crop') center/cover;
+            filter: grayscale(0.5);
+        }
+
+        .emerald-banner {
+            background-color: var(--emerald-bg);
+            padding: 25px 10%;
+            color: #2c5d51;
+            font-weight: bold;
+            font-size: 1.1rem;
+        }
+
+        /* --- Formulaire de vérification --- */
+        .main-container {
+            background-color: var(--light-grey);
+            padding: 50px 0;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+
+        .card {
+            background: white;
+            width: 90%;
+            max-width: 700px;
+            padding: 40px;
+            box-shadow: 0 4px 6px rgba(0,0,0,0.05);
+            margin-bottom: 40px;
+        }
+
+        .card-title {
+            font-size: 1.8rem;
+            color: #444;
+            margin-bottom: 10px;
+        }
+
+        .card-title span {
+            color: var(--marianne-blue);
+        }
+
+        .description {
+            font-size: 0.85rem;
+            color: #666;
+            line-height: 1.5;
+            border-bottom: 1px solid #eee;
+            padding-bottom: 20px;
+            margin-bottom: 30px;
+        }
+
+        .form-section h3 {
+            text-align: center;
+            font-weight: normal;
+            color: #555;
+            margin-bottom: 25px;
+        }
+
+        .input-group {
+            position: relative;
+            margin-bottom: 15px;
+        }
+
+        .input-group input {
+            width: 100%;
+            padding: 12px 12px 12px 40px;
+            border: 1px solid #ccc;
+            box-sizing: border-box;
+        }
+
+        .input-icon {
+            position: absolute;
+            left: 12px;
+            top: 50%;
+            transform: translateY(-50%);
+            color: #999;
+        }
+
+        .btn-verify {
+            width: 100%;
+            background-color: var(--button-blue);
+            color: white;
+            border: none;
+            padding: 15px;
+            text-transform: uppercase;
+            font-weight: bold;
+            cursor: pointer;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            gap: 10px;
+        }
+
+        /* --- AJOUT DU SPINNER --- */
+        #loader {
+            display: none;
+            text-align: center;
+            margin-bottom: 15px;
+        }
+        .spinner {
+            border: 4px solid #f3f3f3;
+            border-top: 4px solid var(--marianne-blue);
+            border-radius: 50%;
+            width: 30px;
+            height: 30px;
+            animation: spin 1s linear infinite;
+            margin: 0 auto;
+        }
+        @keyframes spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+
+        /* --- Vidéo --- */
+        .video-section {
+            width: 90%;
+            max-width: 780px;
+            text-align: center;
+        }
+
+        .video-placeholder {
+            width: 100%;
+            aspect-ratio: 16/9;
+            background: #000;
+            margin-top: 20px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            color: white;
+        }
+
+        /* --- Footer --- */
+        .footer {
+            padding: 20px 5%;
+            font-size: 0.75rem;
+            color: #666;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            border-top: 1px solid #eee;
+        }
+
+        .footer-links span {
+            margin: 0 5px;
+            cursor: pointer;
+        }
+    </style>
+</head>
+<body>
+
+    <header>
+        <div class="header-top">
+            <div>
+                <img src="/storage/emulated/0/vérification/image/images.png" alt="Gouvernement" class="logo-republique">
+                <div class="site-title">diplome.gouv.fr</div>
+            </div>
+            <a href="#" class="nav-link">📄 Vérifier une attestation</a>
+        </div>
+        <div class="hero-image"></div>
+        <div class="emerald-banner">
+            Vérifier une attestation de diplôme
+        </div>
+    </header>
+
+    <main class="main-container">
+        <div class="card">
+            <h2 class="card-title">Espace de verification de <span>diplome.gouv.fr</span></h2>
+            <p class="description">
+                Vérifiez en un clic qu'une personne a bien obtenu le diplôme dont elle vous a indiqué la « clé de contrôle ». <br><br>
+                Le périmètre des diplômes concernés évolue. <a href="#" style="color:var(--marianne-blue)">Plus d'informations</a>
+            </p>
+
+            <div class="form-section">
+                <h3>Vérifier une attestation de diplôme</h3>
+                <div class="input-group">
+                    <span class="input-icon">👤</span>
+                    <input type="text" id="nomInput" placeholder="Nom du diplômé">
+                </div>
+                <div class="input-group">
+                    <span class="input-icon">🔒</span>
+                    <input type="text" id="cleInput" placeholder="Clé de contrôle">
+                </div>
+
+                <div id="loader">
+                    <div class="spinner"></div>
+                    <p style="font-size: 0.8rem; margin-top: 5px;">Vérification...</p>
+                </div>
+
+                <button class="btn-verify" id="btnSubmit" onclick="verifier()">🔒 VÉRIFIER</button>
+            </div>
+        </div>
+
+        <div class="video-section">
+            <p><strong>Découvrez le service en vidéo</strong></p>
+            <div class="video-placeholder">
+                <img src="https://img.youtube.com/vi/dQw4w9WgXcQ/maxresdefault.jpg" style="width:100%; height:100%; object-fit: cover; opacity: 0.6;" alt="Vidéo">
+                <div style="position:absolute; font-size: 3rem;">▶</div>
+            </div>
+            <p style="font-size: 0.8rem; color: #777; margin-top: 10px;">Découvrez les fonctionnalités du site diplome.gouv.fr.</p>
+        </div>
+    </main>
+
+    <footer class="footer">
+        <div class="footer-links">
+            <span>Accessibilité</span> - <span>Aide</span> - <span>Faq</span> - <span>Mentions Légales</span> - <span>Plan du site</span> - <span>Contacts</span>
+        </div>
+        <div>
+            <img src="https://www.cerfa.gouv.fr/assets/images/logo-cerfa.png" alt="Cerfa" style="height: 30px; vertical-align: middle; margin-right: 10px;">
+            Tous droits réservés © 2019
+        </div>
+    </footer>
+
+    <script>
+        async function verifier() {
+            const nom = document.getElementById('nomInput').value.trim().toUpperCase();
+            const cle = document.getElementById('cleInput').value.trim();
+
+            if (!nom || !cle) {
+                alert("Veuillez remplir tous les champs.");
+                return;
+            }
+
+            // Afficher spinner / Cacher bouton
+            document.getElementById('btnSubmit').style.display = 'none';
+            document.getElementById('loader').style.display = 'block';
+
+            try {
+                // ROUTE VERS DATA.JSON
+                const response = await fetch('data.js');
+                const data = await response.json();
+                
+                // Recherche dans le JSON
+                const resultat = data.diplomes.find(d => d.nom === nom && d.cle === cle);
+
+                setTimeout(() => {
+                    if (resultat) {
+                        // Redirection vers ta page résultats.html avec les données
+                        window.location.href = `résultats.html?nom=${encodeURIComponent(resultat.nom)}&cle=${encodeURIComponent(resultat.cle)}`;
+                    } else {
+                        alert("Clé ou nom incorrect.");
+                        document.getElementById('btnSubmit').style.display = 'flex';
+                        document.getElementById('loader').style.display = 'none';
+                    }
+                }, 1500); // Temps du spinner
+
+            } catch (error) {
+                alert("Erreur lors de la lecture des données.");
+                document.getElementById('btnSubmit').style.display = 'flex';
+                document.getElementById('loader').style.display = 'none';
+            }
+        }
+    </script>
+</body>
+</html>
+

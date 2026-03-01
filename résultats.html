@@ -1,0 +1,229 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Résultat de vérification - diplome.gouv.fr</title>
+    <style>
+        :root {
+            --marianne-blue: #000091;
+            --success-green: #27a658;
+            --light-success: #e7f6ed;
+            --text-grey: #3a3a3a;
+            --bg-grey: #f5f5f5;
+        }
+
+        body {
+            font-family: 'Arial', sans-serif;
+            margin: 0;
+            background-color: var(--bg-grey);
+            color: var(--text-grey);
+        }
+
+        .container {
+            max-width: 800px;
+            margin: 40px auto;
+            background: white;
+            padding: 0;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+        }
+
+        .status-banner {
+            background-color: var(--success-green);
+            color: white;
+            padding: 20px;
+            display: flex;
+            align-items: center;
+            font-weight: bold;
+            font-size: 1.1rem;
+        }
+
+        .status-icon {
+            font-size: 1.5rem;
+            margin-right: 15px;
+            background: white;
+            color: var(--success-green);
+            border-radius: 50%;
+            width: 30px;
+            height: 30px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+
+        .diploma-details {
+            padding: 40px;
+        }
+
+        .diploma-header {
+            border-bottom: 2px solid var(--marianne-blue);
+            margin-bottom: 25px;
+            padding-bottom: 10px;
+        }
+
+        .diploma-header h2 {
+            color: var(--marianne-blue);
+            margin: 0;
+            text-transform: uppercase;
+            font-size: 1.4rem;
+        }
+
+        .info-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 20px;
+        }
+
+        .info-item {
+            margin-bottom: 15px;
+        }
+
+        .label {
+            font-size: 0.85rem;
+            color: #666;
+            text-transform: uppercase;
+            display: block;
+            margin-bottom: 5px;
+        }
+
+        .value {
+            font-weight: bold;
+            font-size: 1.05rem;
+        }
+
+        .actions {
+            margin-top: 30px;
+            padding-top: 20px;
+            border-top: 1px solid #eee;
+            display: flex;
+            gap: 15px;
+        }
+
+        .btn {
+            padding: 10px 20px;
+            border: none;
+            cursor: pointer;
+            font-weight: bold;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            text-decoration: none;
+        }
+
+        .btn-primary {
+            background-color: var(--marianne-blue);
+            color: white;
+        }
+
+        .btn-secondary {
+            background-color: #e5e5e5;
+            color: #333;
+        }
+
+        .stamp {
+            border: 2px solid #ccc;
+            padding: 10px;
+            display: inline-block;
+            margin-top: 20px;
+            color: #999;
+            font-size: 0.7rem;
+            text-align: center;
+        }
+    </style>
+</head>
+<body>
+
+    <div class="container">
+        <div class="status-banner">
+            <div class="status-icon">✓</div>
+            Attestation de diplôme valide
+        </div>
+
+        <div class="diploma-details">
+            <div class="diploma-header">
+                <h2 id="res-intitule">Chargement...</h2>
+            </div>
+
+            <div class="info-grid">
+                <div class="info-item">
+                    <span class="label">Nom du titulaire</span>
+                    <span class="value" id="res-nom">...</span>
+                </div>
+                <div class="info-item">
+                    <span class="label">Né(e) le</span>
+                    <span class="value" id="res-naissance">...</span>
+                </div>
+                <div class="info-item">
+                    <span class="label">Académie / Organisme</span>
+                    <span class="value" id="res-academie">...</span>
+                </div>
+                <div class="info-item">
+                    <span class="label">Session</span>
+                    <span class="value" id="res-session">...</span>
+                </div>
+                <div class="info-item">
+                    <span class="label">Série / Spécialité</span>
+                    <span class="value" id="res-spec">...</span>
+                </div>
+                <div class="info-item">
+                    <span class="label">Mention</span>
+                    <span class="value" id="res-mention">...</span>
+                </div>
+            </div>
+
+            <div class="stamp" id="res-stamp">
+                DOCUMENT CERTIFIÉ PAR LE MINISTÈRE DE L'ÉDUCATION NATIONALE<br>
+                Vérification en cours...
+            </div>
+
+            <div class="actions">
+                <a href="#" class="btn btn-primary">📥 Télécharger l'attestation</a>
+                <a href="diplôme 2.html" class="btn btn-secondary">🔍 Nouvelle recherche</a>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        window.onload = async function() {
+            // 1. Récupérer le nom et la clé dans l'URL (envoyés par la page précédente)
+            const params = new URLSearchParams(window.location.search);
+            const nomCherche = params.get('nom');
+            const cleCherche = params.get('cle');
+
+            if(!nomCherche || !cleCherche) {
+                document.body.innerHTML = "<h1>Accès non autorisé</h1>";
+                return;
+            }
+
+            try {
+                // 2. Route vers ton fichier data.json
+                const response = await fetch('data.js');
+                const data = await response.json();
+                
+                // 3. Trouver le diplôme correspondant
+                const diplome = data.diplomes.find(d => d.nom === nomCherche && d.cle === cleCherche);
+
+                if(diplome) {
+                    // 4. Remplir ton design avec les données du JSON
+                    document.getElementById('res-intitule').innerText = diplome.intitule;
+                    document.getElementById('res-nom').innerText = diplome.nom;
+                    document.getElementById('res-naissance').innerText = diplome.naissance;
+                    document.getElementById('res-academie').innerText = diplome.academie;
+                    document.getElementById('res-session').innerText = diplome.session;
+                    document.getElementById('res-spec').innerText = diplome.specialite;
+                    document.getElementById('res-mention').innerText = diplome.mention;
+                    
+                    // Mettre à jour la clé dans le cachet
+                    document.getElementById('res-stamp').innerHTML = `DOCUMENT CERTIFIÉ PAR LE MINISTÈRE DE L'ÉDUCATION NATIONALE<br>Clé de contrôle : ${diplome.cle}`;
+                } else {
+                    alert("Erreur : Diplôme introuvable dans la base.");
+                    window.location.href = "diplôme 2.html";
+                }
+            } catch (e) {
+                console.error("Erreur de liaison avec data.json");
+            }
+        }
+    </script>
+
+</body>
+</html>
